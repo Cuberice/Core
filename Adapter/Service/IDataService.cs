@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
-using System.Text;
-using Common;
+using Core.Data;
 
-namespace RegalWorxData
+namespace Core.Service
 {
 	[ServiceContract]
-	public interface IRWDataService
+	public interface IDataService
 	{
 		IDbAdapter Adapter { get; set; }
 

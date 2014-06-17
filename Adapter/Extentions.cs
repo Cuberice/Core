@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
+using Core.Data;
 
-namespace RegalWorxData
+
+namespace Core.Extensions
 {
 	public static class Extentions
 	{

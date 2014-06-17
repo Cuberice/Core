@@ -1,4 +1,4 @@
-﻿namespace RegalWorxData
+﻿namespace Core
 {
 	partial class TestForm
 	{

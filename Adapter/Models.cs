@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
+using Core.Common;
+using Core.Data;
+using Core.Extensions;
+using Core.Service;
 
 
-namespace RegalWorxData
+namespace Core
 {
 	[DebuggerDisplay("{DebugString()}")]
 	[Table("TBL_USER")]
@@ -188,12 +184,12 @@ namespace RegalWorxData
 			return (T)t;
 		}
 
-		public static void InsertTestObject<T>(this T item, IRWDataService dataService)
+		public static void InsertTestObject<T>(this T item, IDataService dataService)
 		{
 			PerformInsertTestObject(item, dataService);
 		}
 
-		public static void PerformInsertTestObject<T>(T item, IRWDataService dataService)
+		public static void PerformInsertTestObject<T>(T item, IDataService dataService)
 		{
 			Table t = Table.Get(typeof(T));
 			t.GetTableTypeColumns().ForEach(c =>

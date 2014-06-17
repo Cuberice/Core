@@ -7,8 +7,8 @@
     <ProjectGuid>{BE4C1252-68E1-4380-A744-37A9EC055F4B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RegalWorxData</RootNamespace>
-    <AssemblyName>RegalWorxData</AssemblyName>
+    <RootNamespace>Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
@@ -59,7 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service\RWDataService.cs" />
+    <Compile Include="Common\IDebuggerObject.cs" />
+    <Compile Include="Service\DataService.cs" />
     <Compile Include="SQLBuilder\CustomAttributes.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -67,7 +68,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Service\IRWDataService.cs" />
+    <Compile Include="Service\IDataService.cs" />
     <Compile Include="Models.cs" />
     <Compile Include="Adapters\IDbAdapter.cs" />
     <Compile Include="Adapters\MySqlDataAdapter.cs" />

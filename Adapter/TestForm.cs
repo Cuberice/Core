@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Data.SQLite;
-using System.Drawing;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Common;
-using RegalWorxData.Service;
+using Core.Data;
+using Core.Extensions;
+using Core.Service;
 
-namespace RegalWorxData
+namespace Core
 {
 	public partial class TestForm : Form
 	{
@@ -29,13 +23,13 @@ namespace RegalWorxData
 		}
 
 		protected DataGridView Grid { get { return grid; } }
-		protected IRWDataService DataService { get; private set; }
+		protected IDataService DataService { get; private set; }
 		protected SQLBuilder Builder { get; private set; }
 
 		private void TestForm_Shown(object sender, EventArgs e)
 		{
 			IDbAdapter adapter = new SQLiteDataAdapter();
-			DataService = new RWDataService {Adapter = adapter};
+			DataService = new DataService {Adapter = adapter};
 			Builder = new SQLBuilder(DataService.Adapter);
 			Builder.CreateStructure();
 

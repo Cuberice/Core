@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common;
+﻿using System.Collections.Generic;
+using Core.Data;
+using Core.Extensions;
 
-namespace RegalWorxData.Service
+
+namespace Core.Service
 {
-	public class RWDataService : IRWDataService
+	public class DataService : IDataService
 	{
 		public IDbAdapter Adapter { get; set; }
 

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using RegalWorxData;
+using Core.Common;
 
-namespace Common
+namespace Core.Data
 {
 	public interface IDbAdapter
 	{
@@ -32,16 +28,7 @@ namespace Common
 		bool ExecuteNonQuery(string commandstring);
 		#endregion
 	}
-
-	public interface ITestObject
-	{
-		object CreateTestObject();
-	}
-	public interface IDebuggerObject
-	{
-		string DebugString();
-	}
-
+	
 	public interface IAdapterParameter
 	{
 		string Name { get; set; }

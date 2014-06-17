@@ -3,18 +3,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Common;
-using RegalWorxData;
-using RegalWorxData.Properties;
+using Core.Common;
+using Core.Properties;
 
-namespace RegalWorxData
+namespace Core.Data
 {
 	public class SQLiteDataAdapter : IDbAdapter
 	{
