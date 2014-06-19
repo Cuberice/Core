@@ -24,6 +24,13 @@ namespace Core.Data
 		{
 			return IsDefined(t, typeof (Table));
 		}
+
+		public static List<Type> GetNamespaceTableTypes()
+		{
+			return AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(t => t.GetTypes())
+				.Where(t => t.Namespace == "Models" && IsTable(t)).ToList();
+		}
 		public static List<Type> GetAllTableTypes()
 		{
 			return Assembly.GetExecutingAssembly().GetTypes().Where(IsTable).ToList();

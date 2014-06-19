@@ -8,7 +8,7 @@ using Core.Extensions;
 using Core.Service;
 
 
-namespace Core
+namespace Models
 {
 	[DebuggerDisplay("{DebugString()}")]
 	[Table("TBL_USER")]

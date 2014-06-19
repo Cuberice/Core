@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ServiceModel;
 using Core.Data;
+using Models;
 
 namespace Core.Service
 {

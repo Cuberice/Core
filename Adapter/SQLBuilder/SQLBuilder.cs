@@ -16,7 +16,7 @@ namespace Core.Data
 
 		public void CreateStructure()
 		{
-			List<Type> tables = Table.GetAllTableTypes();
+			List<Type> tables = Table.GetNamespaceTableTypes();
 			string cmd = tables.Aggregate(string.Empty, (current, table) => current + CreateScript(table));
 
 			Adapter.ExecuteNonQuery(cmd);
