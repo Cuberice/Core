@@ -80,8 +80,13 @@ namespace Core.Data
 		{
 			return new SQLiteAdapterCommand(commandstring);
 		}
+
+		public void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform)
+		{
+			throw new NotImplementedException();
+		}
 		
-		public void PerformWithDataReader(string cmdSelect, Func<IAdapterReader, object> perform)
+		public void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform)
 		{
 			using (IAdapterConnection conn = new SQLiteAdapterConnection())
 			{
@@ -100,6 +105,7 @@ namespace Core.Data
 				}
 			}
 		}
+
 
 		public bool ExecuteNonQuery(Func<IAdapterCommand> command)
 		{

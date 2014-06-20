@@ -59,9 +59,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Adapters\AdapterExtensions.cs" />
     <Compile Include="Common\IDebuggerObject.cs" />
+    <Compile Include="Models\ModelExtensions.cs" />
     <Compile Include="Service\DataService.cs" />
-    <Compile Include="SQLBuilder\CustomAttributes.cs" />
+    <Compile Include="Models\CustomAttributes.cs" />
     <Compile Include="Extentions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

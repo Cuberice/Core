@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using Core.Adapters;
 using Core.Data;
-using Core.Extensions;
+using Core.Models;
 using Core.Service;
 using Models;
 
@@ -34,7 +35,7 @@ namespace Core
 			Builder = new SQLBuilder(DataService.Adapter);
 			Builder.CreateStructure();
 
-			List<User> users = DataService.GetAllUsers();
+			List<Equipment> users = DataService.GetAllForModel(ModelExtensions.CreateInstance<Equipment>);
 			Grid.DataSource = users;
 		}
 

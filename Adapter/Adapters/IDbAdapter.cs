@@ -22,7 +22,8 @@ namespace Core.Data
 		#region Data Execution
 
 		IAdapterCommand CreateCommand(string commandstring);
-		void PerformWithDataReader(string cmdSelect, Func<IAdapterReader, object> perform);
+		void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform);
+		void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform);
 
 		bool ExecuteNonQuery(Func<IAdapterCommand> command);
 		bool ExecuteNonQuery(string commandstring);

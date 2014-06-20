@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Core;
 using Core.Common;
 using Core.Data;
-using Core.Extensions;
 using Core.Service;
 
 
@@ -160,45 +160,6 @@ namespace Models
 		public override string ToString()
 		{
 			return Description;
-		}
-	}
-
-	public static class ModelExtensions
-	{
-		public static T CreateInstance<T>(IAdapterReader reader) where T : new()
-		{
-			List<Column> columns = Column.GetAll(typeof(T));
-			object t = new T();
-			foreach (Column c in columns)
-			{
-				try
-				{
-					object value = reader.GetValue(c.Name);
-					c.Property.SetValue(t, value);
-				}
-				catch (Exception e)
-				{
-					Console.WriteLine(e);
-				}
-			}
-			return (T)t;
-		}
-
-		public static void InsertTestObject<T>(this T item, IDataService dataService)
-		{
-			PerformInsertTestObject(item, dataService);
-		}
-
-		public static void PerformInsertTestObject<T>(T item, IDataService dataService)
-		{
-			Table t = Table.Get(typeof(T));
-			t.GetTableTypeColumns().ForEach(c =>
-			{
-				dynamic value = c.Property.GetValue(item);
-				PerformInsertTestObject(value, dataService);
-			});
-
-			dataService.InsertModel(item);
 		}
 	}
 }

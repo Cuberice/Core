@@ -74,7 +74,12 @@ namespace Core.Data
 			throw new NotImplementedException();
 		}
 
-		public void PerformWithDataReader(string cmdSelect, Func<IAdapterReader, object> perform)
+		public void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform)
+		{
+			
+		}
+
+		public void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform)
 		{
 			
 		}
