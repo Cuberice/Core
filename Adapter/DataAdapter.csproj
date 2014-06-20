@@ -64,14 +64,14 @@
     <Compile Include="Models\ModelExtensions.cs" />
     <Compile Include="Service\DataService.cs" />
     <Compile Include="Models\CustomAttributes.cs" />
-    <Compile Include="Extentions.cs" />
+    <Compile Include="Common\Extentions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Service\IDataService.cs" />
-    <Compile Include="Models.cs" />
+    <Compile Include="Models\Models.cs" />
     <Compile Include="Adapters\IDbAdapter.cs" />
     <Compile Include="Adapters\MySqlDataAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
