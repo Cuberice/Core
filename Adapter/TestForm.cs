@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using Core.Adapters;
 using Core.Data;
 using Core.Models;
 using Core.Service;
@@ -35,32 +34,30 @@ namespace Core
 			Builder = new SQLBuilder(DataService.Adapter);
 			Builder.CreateStructure();
 
-			List<Equipment> users = DataService.GetAllForModel(ModelExtensions.CreateInstance<Equipment>);
+			List<CoreEquipment> users = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>);
 			Grid.DataSource = users;
 		}
 
 		private void GenerateTestData_Click(object sender, EventArgs e)
 		{
-			List<User> users = User.CreateTestInstances(3);
-			List<Equipment> equipment = Equipment.CreateTestInstances(5);
-
-			string cmd = DataService.Adapter.CreateSelectCommand<Equipment>(eq => eq.Name == "SomeName" || eq.Type.ID == equipment.First().Type.ID);
+			List<CoreEquipmentMake> equipment = CoreEquipment.CreateTestInstances(5);
+			string cmd = DataService.Adapter.CreateSelectCommand<CoreEquipment>(eq => eq.Name == "SomeName" || eq.Make.ID == equipment.First().ID);
 		}
 
 		private void TestInsert_Click(object sender, EventArgs e)
 		{
-			User.CreateTestInstances(3).ForEach(u => DataService.InsertModel(u));
-			Equipment.CreateTestInstances(5).ForEach(u => u.InsertTestObject(DataService));
+			CoreEquipment.CreateTestInstances(3).ForEach(u => DataService.InsertModel(u));
+			CoreEquipment.CreateTestInstances(5).ForEach(u => u.InsertTestObject(DataService));
 		}
 
 		private void TestUpdate_Click(object sender, EventArgs e)
 		{
-			Equipment eq = DataService.GetAllEquipment().First();
+			CoreEquipment eq = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>).First();
 			eq.SerialNumber = "123-456-789";
 
 			DataService.UpdateModel(eq);
 
-			List<Equipment> equipment = DataService.GetAllEquipment();
+			List<CoreEquipment> equipment = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>);
 			Grid.DataSource = equipment;
 		}
 	}

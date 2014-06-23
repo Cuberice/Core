@@ -4,17 +4,11 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq.Expressions;
 using System.Threading;
-using Core.Data;
 
 namespace Core.Data
 {
 	public class MySqlDataAdapter : IDbAdapter
 	{
-		public MySqlDataAdapter(MySqlConnection conn)
-		{
-			
-		}
-
 		#region Command Building
 		public string CREATETABLE()
 		{

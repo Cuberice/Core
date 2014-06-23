@@ -26,11 +26,20 @@ namespace Core.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=C:\\Users\\Neil\\Source\\Repos\\RegalWorx\\RegalWorx\\Content\\RegalWorxDB.sq" +
-            "litedb")]
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=C:\\Development\\SourceVaults\\GIT\\GitHub\\RegalWorx\\RegalWorx\\Content\\Re" +
+            "galWorxDB.sqlitedb")]
         public string DbConnection {
             get {
                 return ((string)(this["DbConnection"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SQLiteDataAdapter")]
+        public string IDataAdapterType {
+            get {
+                return ((string)(this["IDataAdapterType"]));
             }
         }
     }

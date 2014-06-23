@@ -1,48 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using Core.Adapters;
+using System.ServiceModel;
 using Core.Data;
-using Core.Models;
-using Models;
-
 
 namespace Core.Service
 {
+	[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
 	public class DataService : IDataService
 	{
 		public IDbAdapter Adapter { get; set; }
 
+		public DataService()
+		{
+			GetAdapter();
+		}		
+		private void GetAdapter()
+		{
+			switch (Properties.Settings.Default.IDataAdapterType)
+			{
+				case "SQLiteDataAdapter": Adapter = new SQLiteDataAdapter(); break;
+				case "MySqlDataAdapter": Adapter = new MySqlDataAdapter(); break;
+
+				default: Adapter = new SQLiteDataAdapter();
+					break;
+			}
+		}
+		
 		public string SelectCommandString<T>()
 		{
 			return Adapter.CreateSelectCommand<T>();
 		}
-
-		public List<User> GetAllUsers()
-		{
-			List<User> list = new List<User>();
-			Adapter.PerformWithDataReader(SelectCommandString<User>(), r => list.Add(ModelExtensions.CreateInstance<User>(r)));
-
-			return list;
-		}
-
-		public List<Equipment> GetAllEquipment()
-		{
-			List<Equipment> list = new List<Equipment>();
-			Adapter.PerformWithDataReader(SelectCommandString<Equipment>(), r => list.Add(ModelExtensions.CreateInstance<Equipment>(r)));
-
-			return list;
-		}
-
-		public void InsertUser(User user)
-		{
-			Adapter.ExecuteNonQuery(() => Adapter.CreateInsertCommand(user));
-		}
-		public void InsertEquipment(Equipment equipment)
-		{
-			Adapter.ExecuteNonQuery(() => Adapter.CreateInsertCommand(equipment));
-		}
-
-
+		
 		public List<T> GetAllForModel<T>(Func<IAdapterReader, T> CreateInstance)
 		{
 			List<T> list = new List<T>();

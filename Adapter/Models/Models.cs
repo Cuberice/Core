@@ -11,56 +11,8 @@ using Core.Service;
 namespace Models
 {
 	[DebuggerDisplay("{DebugString()}")]
-	[Table("TBL_USER")]
-	public struct User : ITestObject, IDebuggerObject
-	{
-		[Column("ID", Column.DataType.Guid, PrimaryKey = true)]
-		public Guid ID { get; private set; }
-
-		[Column("NAME", Column.DataType.String, NotNull = true)]
-		public string Name { get; set; }
-
-		[Column("TYPE", Column.DataType.Integer, NotNull = true)]
-		public UserType Type { get; set; }
-
-		public User(Guid id, string name, int typeid) : this()
-		{
-			ID = id;
-			Name = "";
-			Type = UserType.Admin;
-		}
-		
-		public Object CreateTestObject()
-		{
-			ID = Guid.NewGuid();
-			Name = Extentions.GetRandomString(8);
-			Type = UserType.Normal;
-
-			return this;
-		}
-		public string DebugString()
-		{
-			return ToString();
-		}
-		public override string ToString()
-		{
-			return string.Format("User ID: {0}, Name: {1}, Type: {2}", ID, Name, Type);
-		}
-		public static List<User> CreateTestInstances(int amount)
-		{
-			return Enumerable.Range(1, amount).Cast<object>().Select(i => new User().CreateTestObject()).Cast<User>().ToList();
-		}
-	}
-	public enum UserType
-	{
-		Admin = 1, 
-		Supervisor = 2,
-		Normal = 3
-	}
-
-	[DebuggerDisplay("{DebugString()}")]
-	[Table("TBL_EQUIPMENT")]
-	public struct Equipment : ITestObject, IDebuggerObject
+	[Table("TBL_CORE_EQUIPMENT")]
+	public struct CoreEquipment : ITestObject, IDebuggerObject
 	{
 		[Column("ID", Column.DataType.Guid, PrimaryKey = true)]
 		public Guid ID { get; private set; }
@@ -84,22 +36,18 @@ namespace Models
 		public DateTime DecommisionDate { get; set; }
 
 		[Column("MAKE", Column.DataType.Guid)]
-		public EquipmentMake Make { get; set; }
-
-		[Column("TYPE", Column.DataType.Guid)]
-		public EquipmentType Type { get; set; }
+		public CoreEquipmentMake Make { get; set; }
 
 		public object CreateTestObject()
 		{
 			ID = Guid.NewGuid();
 			Name = Extentions.GetRandomString(8);
 			PurchaseDate = DateTime.Now;
-			Make = (EquipmentMake)new EquipmentMake().CreateTestObject();
-			Type = (EquipmentType)new EquipmentType().CreateTestObject();
-
+			Make = (CoreEquipmentMake)new CoreEquipmentMake().CreateTestObject();
+			
 			return this;
 		}
-		
+
 		public string DebugString()
 		{
 			return ToString();
@@ -107,59 +55,37 @@ namespace Models
 
 		public override string ToString()
 		{
-			return string.Format("Equipment Name: {0}, Type: {1}, Make: {2}", Name, Type, Make);
+			return string.Format("Equipment Name: {0}, Make: {1}", Name, Make);
 		}
-		public static List<Equipment> CreateTestInstances(int amount)
+		public static List<CoreEquipmentMake> CreateTestInstances(int amount)
 		{
-			return Enumerable.Range(1, amount).Cast<object>().Select(i => new Equipment().CreateTestObject()).Cast<Equipment>().ToList();
+			return Enumerable.Range(1, amount).Cast<object>().Select(i => new CoreEquipmentMake().CreateTestObject()).Cast<CoreEquipmentMake>().ToList();
 		}
 	}
 
-	[Table("TBL_EQUIPMENT_MAKE")]
-	public struct EquipmentMake : ITestObject
+	[Table("TBL_CORE_EQUIPMENT_MAKE")]
+	public struct CoreEquipmentMake : ITestObject
 	{
 		[Column("ID", Column.DataType.Guid, PrimaryKey = true)]
 		public Guid ID { get; private set; }
-
+	
 		[Column("NAME", Column.DataType.String, NotNull = true)]
 		public string Name { get; set; }
-
+	
 		public object CreateTestObject()
 		{
 			ID = Guid.NewGuid();
 			Name = "Test Equipment Make";
-
+	
 			return this;
 		}
 		public override string ToString()
 		{
 			return Name;
 		}
-		public static List<EquipmentMake> CreateTestInstances(int amount)
+		public static List<CoreEquipmentMake> CreateTestInstances(int amount)
 		{
-			return Enumerable.Range(1, amount).Cast<object>().Select(i => new EquipmentMake().CreateTestObject()).Cast<EquipmentMake>().ToList();
-		}
-	}
-
-	[Table("TBL_EQUIPMENT_TYPE")]
-	public struct EquipmentType : ITestObject
-	{
-		[Column("ID", Column.DataType.Guid, PrimaryKey = true)]
-		public Guid ID { get; private set; }
-
-		[Column("DESCRIPTION", Column.DataType.String, NotNull = true)]
-		public string Description { get; set; }
-
-		public object CreateTestObject()
-		{
-			ID = Guid.NewGuid();
-			Description = "Test Equipment Type";
-
-			return this;
-		}
-		public override string ToString()
-		{
-			return Description;
+			return Enumerable.Range(1, amount).Cast<object>().Select(i => new CoreEquipmentMake().CreateTestObject()).Cast<CoreEquipmentMake>().ToList();
 		}
 	}
 }

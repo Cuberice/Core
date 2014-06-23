@@ -5,9 +5,8 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Core.Data;
 
-namespace Core.Adapters
+namespace Core.Data
 {
 	public static class AdapterExtensions
 	{
@@ -203,6 +202,12 @@ namespace Core.Adapters
 			}
 
 			return value;
+		}
+
+		private static void CheckAdapter(IDbAdapter adapter)
+		{
+			if(adapter == null)
+				throw new ArgumentNullException();
 		}
 	}
 }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using Core.Data;
-using Models;
 
 namespace Core.Service
 {
@@ -13,18 +12,6 @@ namespace Core.Service
 
 		[OperationContract]
 		string SelectCommandString<T>();
-	
-		[OperationContract]
-		List<User> GetAllUsers();		
-		
-		[OperationContract]
-		List<Equipment> GetAllEquipment();
-
-		[OperationContract]
-		void InsertUser(User user);
-
-		[OperationContract]
-		void InsertEquipment(Equipment equipment);
 
 		[OperationContract]
 		List<T> GetAllForModel<T>(Func<IAdapterReader, T> CreateInstance);
