@@ -24,5 +24,14 @@ namespace Core
 		{
 			return expression == null;
 		}
+		public static bool IsNull(this Object obj)
+		{
+			return obj == null;
+		}		
+		
+		public static bool NotNull(this Object obj)
+		{
+			return obj != null;
+		}
 	}
 }

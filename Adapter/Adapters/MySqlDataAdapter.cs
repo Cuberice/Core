@@ -4,10 +4,11 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq.Expressions;
 using System.Threading;
+using Core.Properties;
 
 namespace Core.Data
 {
-	public class MySqlDataAdapter : IDbAdapter
+	public class MySqlDataAdapter : IDbAdapter 
 	{
 		#region Command Building
 		public string CREATETABLE()
@@ -67,15 +68,15 @@ namespace Core.Data
 		{
 			throw new NotImplementedException();
 		}
-
-		public void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform)
-		{
-			
-		}
-
+		
 		public void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform)
 		{
-			
+			throw new NotImplementedException();
+		}
+
+		public void PerformWithDataReader(Func<IAdapterCommand> command, Action<IAdapterReader> perform)
+		{
+			throw new NotImplementedException();
 		}
 
 		public bool ExecuteNonQuery(Func<IAdapterCommand> command)
@@ -115,9 +116,13 @@ namespace Core.Data
 			}
 			public ConnectionState State { get; set; }
 
+			public string GetConnectionString()
+			{
+				return Settings.Default.DbConnection;
+			}
 			public MySQLAdapterConnection()
 			{
-				Connection = new MySqlConnection(Properties.Settings.Default.DbConnection);
+				Connection = new MySqlConnection(GetConnectionString());
 
 				while (Connection.State != ConnectionState.Closed)
 				{

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Common;
 using Core.Data;
 using Core.Service;
 using Models;
@@ -20,6 +21,10 @@ namespace Core.Models
 				try
 				{
 					object value = reader.GetValue(c.Name);
+					if (Table.IsTable(c.PropertyType))
+					{
+						
+					}
 					c.Property.SetValue(t, value);
 				}
 				catch (Exception e)
@@ -30,21 +35,9 @@ namespace Core.Models
 			return (T)t;
 		}
 
-		public static void InsertTestObject<T>(this T item, IDataService dataService)
+		public static List<T> CreateTestInstances<T>(int amount) where T : ITestObject, new()
 		{
-			PerformInsertTestObject(item, dataService);
-		}
-
-		public static void PerformInsertTestObject<T>(T item, IDataService dataService)
-		{
-			Table t = Table.Get(typeof(T));
-			t.GetTableTypeColumns().ForEach(c =>
-			{
-				dynamic value = c.Property.GetValue(item);
-				PerformInsertTestObject(value, dataService);
-			});
-
-			dataService.InsertModel(item);
+			return Enumerable.Range(1, amount).Cast<object>().Select(i => new T().CreateTestObject()).Cast<T>().ToList();
 		}
 	}
 }

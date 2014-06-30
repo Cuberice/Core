@@ -41,6 +41,7 @@ namespace Core.Data
 				case Column.DataType.LargeText: return "NVARCHAR(500)";
 				case Column.DataType.Double: return "DOUBLE";
 				case Column.DataType.DateTime: return "DATETIME";
+				case Column.DataType.Boolean: return "BIT";
 			}
 
 			return "UNDEFINED DATATYPE";
@@ -73,17 +74,13 @@ namespace Core.Data
 			}
 			return "Symbol Not Implemented";
 		}
+		
 		#endregion
 
 		#region Data Execution
 		public IAdapterCommand CreateCommand(string commandstring)
 		{
 			return new SQLiteAdapterCommand(commandstring);
-		}
-
-		public void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform)
-		{
-			throw new NotImplementedException();
 		}
 		
 		public void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform)
@@ -105,8 +102,27 @@ namespace Core.Data
 				}
 			}
 		}
+		public void PerformWithDataReader(Func<IAdapterCommand> command, Action<IAdapterReader> perform)
+		{
+			using (IAdapterConnection conn = new SQLiteAdapterConnection())
+			{
+				using (IAdapterCommand cmd = command())
+				{
+					cmd.SetConnection(conn);
+					using (IAdapterReader r = cmd.ExecuteReader())
+					{
+						if (!r.HasRows())
+							return;
 
-
+						while (r.Read())
+						{
+							perform(r);
+						}
+					}
+				}
+			}
+		}
+		
 		public bool ExecuteNonQuery(Func<IAdapterCommand> command)
 		{
 			using (IAdapterConnection conn = new SQLiteAdapterConnection())
@@ -145,9 +161,13 @@ namespace Core.Data
 			}
 			public ConnectionState State { get { return Connection.State; } }
 
+			public string GetConnectionString()
+			{
+				return Settings.Default.DbConnection;
+			}
 			public SQLiteAdapterConnection()
 			{
-				Connection = new SQLiteConnection(Settings.Default.DbConnection);
+				Connection = new SQLiteConnection(GetConnectionString());
 
 				while (Connection.State != ConnectionState.Closed)
 				{
@@ -155,12 +175,10 @@ namespace Core.Data
 				}
 				Open();
 			}
-
 			public void Open()
 			{
 				Connection.Open();
 			}
-
 			public void Dispose()
 			{
 				Connection.Dispose();

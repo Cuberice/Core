@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.ServiceModel;
 using Core.Data;
 
@@ -9,12 +10,15 @@ namespace Core.Service
 	public interface IDataService
 	{
 		IDbAdapter Adapter { get; set; }
+		
+		[OperationContract]
+		List<T> GetAllForModelCache<T>() where T : new(); 
 
 		[OperationContract]
-		string SelectCommandString<T>();
+		List<T> SelectForModel<T>() where T : new();
 
 		[OperationContract]
-		List<T> GetAllForModel<T>(Func<IAdapterReader, T> CreateInstance);
+		List<T> SelectForModel<T>(Expression<Func<T, bool>> f) where T : new();
 		
 		[OperationContract]
 		void InsertModel<T>(T t);

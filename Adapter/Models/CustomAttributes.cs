@@ -12,6 +12,7 @@ namespace Core.Data
 	[AttributeUsage(AttributeTargets.Struct | AttributeTargets.Class)]
 	public class Table : Attribute, IDebuggerObject
 	{
+		public string TypeName { get { return ClassType.Name; } }
 		public string TableName;
 		public Type ClassType;
 		public List<Column> Columns;
@@ -43,19 +44,35 @@ namespace Core.Data
 			table.Columns = Column.GetAll(t);
 			return table;
 		}
+
+		public static Column GetPrimaryKey(Type type)
+		{
+			Table table = Get(type);
+			return table.GetPrimaryKey();
+		}
 		public Column GetPrimaryKey()
 		{
 			return Columns.First(c => c.PrimaryKey); // Column.GetAll(ClassType).First(c => c.PrimaryKey);
 		}
+		public static object GetTablePrimaryKeyValue(Type type, object value)
+		{
+			Column pk = GetPrimaryKey(type);
+			return pk.GetColumnValue(value);
+		}
+
 		/// <summary>
 		/// Returns a collection of Columns which has a PropertyType for which a Table is defined
 		/// </summary>
 		/// <returns></returns>
 		public List<Column> GetTableTypeColumns()
 		{
-			return Columns.Where(c => IsTable(c.Property.PropertyType)).ToList();
+			return Columns.Where(c => IsTable(c.PropertyType)).ToList();
 		}
 
+		public string GetColumnString()
+		{
+			return Columns.Aggregate(string.Empty, (current, c) => current + string.Format("{0}, ", c.Name)).TrimEnd(' ').TrimEnd(',');
+		}
 		public string DebugString()
 		{
 			return string.Format("{0} - Type [{1}]", TableName, ClassType.Name);
@@ -68,18 +85,22 @@ namespace Core.Data
 	{
 		public string Name;
 		public DataType ColumnType;
+		public ValueType Type;
 		public bool PrimaryKey = false;
 		public bool Unique = false;
 		public bool NotNull = false;
 		public string OldName;
 
 		public PropertyInfo Property;
-		public Type ColumnSystemType{ get{ return GetSystemType(); }}
+		public Type PropertyType { get { return Property.PropertyType; } }
+		public string TypeName { get { return Property.IsNull() ? "EmptyType" : PropertyType.Name; } }
+		public Type ColumnSystemType{ get{ return GetColumnType(); }}
 
     public Column(string column, DataType columnType)
     {
 	    Name = column;
 	    ColumnType = columnType;
+			Type = ValueType.Value;
     }
 
 		/// <summary>
@@ -103,7 +124,7 @@ namespace Core.Data
 		{
 			try
 			{
-				Type propType = Property.PropertyType;
+				Type propType = PropertyType;
 				object propValue = Property.GetValue(obj);
 
 				if (propType.IsPrimitive)
@@ -115,12 +136,9 @@ namespace Core.Data
 				if (propType.Namespace.StartsWith("System"))
 					return propValue;
 
-				if (Table.IsTable(propType))
+				if (Table.IsTable(propType))										//Returns the Pk value of the Lookup Table
 				{
-					Table propTable = Table.Get(propType);
-					Column propColumn = propTable.GetPrimaryKey();
-
-					return propColumn.GetColumnValue(propValue);
+					return Table.GetTablePrimaryKeyValue(propType, propValue);
 				}
 
 				return null;
@@ -134,10 +152,14 @@ namespace Core.Data
 
 		public enum DataType
 		{
-			Guid, Integer, String, Double, DateTime, Text, LargeText
+			Guid, Integer, String, Double, DateTime, Text, LargeText, Boolean
+		}
+		public enum ValueType
+		{
+			Value, Lookup
 		}
 
-		protected Type GetSystemType()
+		protected Type GetColumnType()
 		{
 			switch (ColumnType)
 			{

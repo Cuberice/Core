@@ -20,10 +20,10 @@ namespace Core.Data
 		#endregion
 
 		#region Data Execution
-
+		
 		IAdapterCommand CreateCommand(string commandstring);
-		void PerformWithDataReader<T>(string cmdSelect, Func<IAdapterReader, T> perform);
 		void PerformWithDataReader(string cmdSelect, Action<IAdapterReader> perform);
+		void PerformWithDataReader(Func<IAdapterCommand> command, Action<IAdapterReader> perform); 
 
 		bool ExecuteNonQuery(Func<IAdapterCommand> command);
 		bool ExecuteNonQuery(string commandstring);
@@ -37,6 +37,7 @@ namespace Core.Data
 	}
 	public interface IAdapterConnection : IDisposable
 	{
+		string GetConnectionString();
 		ConnectionState State { get;}
 		object ConnObject { get; set; }
 		void Open();

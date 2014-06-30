@@ -25,39 +25,37 @@ namespace Core
 
 		protected DataGridView Grid { get { return grid; } }
 		protected IDataService DataService { get; private set; }
+		protected IDbAdapter Adapter { get { return DataService.Adapter; } }
 		protected SQLBuilder Builder { get; private set; }
 
 		private void TestForm_Shown(object sender, EventArgs e)
 		{
-			IDbAdapter adapter = new SQLiteDataAdapter();
-			DataService = new DataService {Adapter = adapter};
+			DataService = new DataService();
 			Builder = new SQLBuilder(DataService.Adapter);
 			Builder.CreateStructure();
 
-			List<CoreEquipment> users = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>);
+			List<CoreEquipment> users = DataService.SelectForModel<CoreEquipment>();
 			Grid.DataSource = users;
 		}
 
 		private void GenerateTestData_Click(object sender, EventArgs e)
 		{
-			List<CoreEquipmentMake> equipment = CoreEquipment.CreateTestInstances(5);
-			string cmd = DataService.Adapter.CreateSelectCommand<CoreEquipment>(eq => eq.Name == "SomeName" || eq.Make.ID == equipment.First().ID);
+			List<CoreEquipment> equipment = ModelExtensions.CreateTestInstances<CoreEquipment>(5);
 		}
 
 		private void TestInsert_Click(object sender, EventArgs e)
 		{
-			CoreEquipment.CreateTestInstances(3).ForEach(u => DataService.InsertModel(u));
-			CoreEquipment.CreateTestInstances(5).ForEach(u => u.InsertTestObject(DataService));
+			ModelExtensions.CreateTestInstances<CoreEquipment>(3).ForEach(u => DataService.InsertModel(u));
 		}
 
 		private void TestUpdate_Click(object sender, EventArgs e)
 		{
-			CoreEquipment eq = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>).First();
+			CoreEquipment eq = DataService.SelectForModel<CoreEquipment>().First();
 			eq.SerialNumber = "123-456-789";
 
 			DataService.UpdateModel(eq);
 
-			List<CoreEquipment> equipment = DataService.GetAllForModel(ModelExtensions.CreateInstance<CoreEquipment>);
+			List<CoreEquipment> equipment = DataService.SelectForModel<CoreEquipment>();
 			Grid.DataSource = equipment;
 		}
 	}
