@@ -12,7 +12,7 @@ namespace Core.Service
 		IDbAdapter Adapter { get; set; }
 		
 		[OperationContract]
-		List<T> GetAllForModelCache<T>() where T : new(); 
+		List<T> GetAllForModelNoCache<T>() where T : new(); 
 
 		[OperationContract]
 		List<T> SelectForModel<T>() where T : new();

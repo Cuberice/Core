@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Core;
 using Core.Common;
@@ -31,8 +32,11 @@ namespace Models
 		[Column("PURCHASEDATE", Column.DataType.DateTime)]
 		public DateTime PurchaseDate { get; set; }
 
-		[Column("MAKE", Column.DataType.Guid, Type = Column.ValueType.Lookup)]
+		[Column("MAKE", Column.DataType.Guid)]
 		public CoreEquipmentMake Make { get; set; }
+
+		[Column("DIR", Column.DataType.String, Conversion = Column.ConversionType.DirectoryInfo)]
+		public DirectoryInfo Directory { get; set; }
 
 		public object CreateTestObject()
 		{
@@ -41,7 +45,7 @@ namespace Models
 			Cost = new Random().NextDouble();
 			PurchaseDate = DateTime.Now;
 			Make = (CoreEquipmentMake)new CoreEquipmentMake().CreateTestObject();
-			
+			Directory = new DirectoryInfo(@"C:\Stuff\SyncTest\Destination");
 			return this;
 		}
 
@@ -68,7 +72,7 @@ namespace Models
 		public object CreateTestObject()
 		{
 			ID = Guid.NewGuid();
-			Name = Extentions.GetRandomString(8);
+			Name = "Make-" + Extentions.GetRandomString(8);
 	
 			return this;
 		}

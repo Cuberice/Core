@@ -16,6 +16,7 @@ namespace Core.Data
 
 		public void CreateStructure()
 		{
+			AttributeExtensions.LoadAllAssemblies();
 			List<Type> tables = Table.GetNamespaceTableTypes();
 			string cmd = tables.Aggregate(string.Empty, (current, table) => current + CreateScript(table));
 

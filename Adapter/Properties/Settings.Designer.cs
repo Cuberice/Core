@@ -26,8 +26,8 @@ namespace Core.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=C:\\Development\\SourceVaults\\GIT\\GitHub\\RegalWorx\\RegalWorx\\Content\\Re" +
-            "galWorxDB.sqlitedb")]
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=C:\\Development\\SourceVaults\\GIT\\GitHub\\Core\\Adapter\\Content\\SQLite\\Co" +
+            "re.sqlitedb")]
         public string DbConnection {
             get {
                 return ((string)(this["DbConnection"]));

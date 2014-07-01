@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Core.Common;
@@ -86,6 +87,7 @@ namespace Core.Data
 		public string Name;
 		public DataType ColumnType;
 		public ValueType Type;
+		public ConversionType Conversion;
 		public bool PrimaryKey = false;
 		public bool Unique = false;
 		public bool NotNull = false;
@@ -93,14 +95,14 @@ namespace Core.Data
 
 		public PropertyInfo Property;
 		public Type PropertyType { get { return Property.PropertyType; } }
-		public string TypeName { get { return Property.IsNull() ? "EmptyType" : PropertyType.Name; } }
+		public string PropertyTypeName { get { return Property.IsNull() ? "EmptyType" : PropertyType.Name; } }
 		public Type ColumnSystemType{ get{ return GetColumnType(); }}
-
+		
     public Column(string column, DataType columnType)
     {
 	    Name = column;
 	    ColumnType = columnType;
-			Type = ValueType.Value;
+			Conversion = ConversionType.None;
     }
 
 		/// <summary>
@@ -120,6 +122,21 @@ namespace Core.Data
 			return c;
 		}
 
+		protected Type GetColumnType()
+		{
+			switch (ColumnType)
+			{
+				case DataType.Guid: return typeof(Guid);
+				case DataType.Integer: return typeof(int);
+				case DataType.String: return typeof(string);
+				case DataType.Double: return typeof(double); 
+				case DataType.Boolean: return typeof(bool); 
+				case DataType.DateTime: return typeof(DateTime);
+				case DataType.Text: return typeof(string);
+				case DataType.LargeText: return typeof(string);
+			}
+			return null;
+		}
 		public object GetColumnValue<T>(T obj)
 		{
 			try
@@ -158,20 +175,10 @@ namespace Core.Data
 		{
 			Value, Lookup
 		}
-
-		protected Type GetColumnType()
+		public enum ConversionType
 		{
-			switch (ColumnType)
-			{
-				case DataType.Guid : return typeof(Guid);
-				case DataType.Integer : return typeof(int);
-				case DataType.String : return typeof(string);
-				case DataType.Double : return typeof(double);
-				case DataType.DateTime : return typeof(DateTime);
-				case DataType.Text : return typeof(string);
-				case DataType.LargeText : return typeof(string);
-			}
-			return null;
+			None,
+			DirectoryInfo
 		}
 
 		public string DebugString()
@@ -182,6 +189,30 @@ namespace Core.Data
 
 	public static class AttributeExtensions
 	{
+		public static List<Table> DebugGetNamespaceTableTypes()
+		{
+			List<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+			List<Type> types = assemblies.SelectMany(t => t.GetTypes()).ToList();
+			List<Type> models = types.Where(t => t.Namespace == "Models").ToList();
+			List<Type> tables = models.Where(Table.IsTable).ToList();
 
+			return tables.Select(Table.Get).ToList();
+		}
+		public static void LoadAllAssemblies()
+		{
+			string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "");
+			List<string> assemblyNames = AppDomain.CurrentDomain.GetAssemblies().Select(a => a.GetName()).Select(a => a.Name + ".dll").ToList();
+
+			foreach (string f in Directory.GetFiles(path, "*.dll"))
+			{
+				FileInfo fi = new FileInfo(f);
+
+				if (!assemblyNames.Contains(fi.Name))
+				{
+					Assembly.LoadFile(fi.FullName);
+					assemblyNames.Add(fi.Name);
+				}
+			}
+		}
 	}
 }
