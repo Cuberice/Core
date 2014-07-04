@@ -24,7 +24,7 @@ namespace Core.Data
 			Table t = Table.Get(typeof(T));
 			string scol = t.GetColumnString();
 			return adapter.CreateCommand(string.Format(adapter.SELECT(), scol, t.TableName, string.Empty));
-		}
+		} 
 		public static IAdapterCommand CreateSelectCommand<T>(this IDbAdapter adapter, Expression<Func<T, bool>> f)
 		{
 			Table t = Table.Get(typeof(T));
@@ -33,10 +33,21 @@ namespace Core.Data
 			string swhere = "WHERE " + exCmd.GetCommandString(adapter);
 			string scolumns = t.GetColumnString();
 
-			IAdapterCommand cmd = adapter.CreateCommand(string.Format(adapter.SELECT(), scolumns, t.TableName, swhere));
-			exCmd.ParameterList.ForEach(p => cmd.AddParameter(p.ParameterName, p.ParameterValue));
+			IAdapterCommand ACmd = adapter.CreateCommand(string.Format(adapter.SELECT(), scolumns, t.TableName, swhere));
+			exCmd.ParameterList.ForEach(p => ACmd.AddParameter(p.ParameterName, p.ParameterValue));
 
-			return cmd;
+			return ACmd;
+		}		
+		public static IAdapterCommand CreateSelectCommand<T>(this IDbAdapter adapter, Command cmd)
+		{
+			Table t = Table.Get(typeof(T));
+			string swhere = "WHERE " + cmd.GetCommandString(adapter);
+			string scolumns = t.GetColumnString();
+
+			IAdapterCommand ACmd = adapter.CreateCommand(string.Format(adapter.SELECT(), scolumns, t.TableName, swhere));
+			cmd.ParameterList.ForEach(p => ACmd.AddParameter(p.ParameterName, p.ParameterValue));
+
+			return ACmd;
 		}
 		
 		public static IAdapterCommand CreateInsertCommand<T>(this IDbAdapter adapter, T obj)
@@ -68,7 +79,7 @@ namespace Core.Data
 			try
 			{
 				Table t = Table.Get(typeof(T));
-				Column pk = t.GetPrimaryKey();
+				Column pk = t.PrimaryKey;
 
 				string swhere = string.Format("{0} = @pk_val", pk.Name);
 				string sset = t.Columns.Where(c => !c.PrimaryKey).Aggregate(string.Empty, (current, c) => current + string.Format("{0} = @p_{1},", c.Name, c.Name.ToLower())).TrimEnd(',');
@@ -109,5 +120,55 @@ namespace Core.Data
 				throw;
 			}
 		}
+
+		#region Data Type Conversion
+
+		public static string GetString(object value, string column)
+		{
+			return value.ToString();
+		}
+
+		public static bool GetBoolean(object value, string column)
+		{
+			if (value == null || value == DBNull.Value)
+				return false;
+
+			return Boolean.Parse(value.ToString());
+		}
+
+		public static int GetInt32(object value, string column)
+		{
+			if (value == null || value == DBNull.Value)
+				return 0;
+			
+			return Int32.Parse(value.ToString());
+		}
+
+		public static int? GetNullableInt32(object value, string column)
+		{
+			if (value == null || value == DBNull.Value)
+				return null;
+			
+			return Int32.Parse(value.ToString());
+		}
+
+		public static DateTime? GetDateTime(object value)
+		{
+			try
+			{
+				string s =value.ToString();
+				if (s == string.Empty)
+					return null;
+
+				return DateTime.Parse(s);
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				return DateTime.MinValue;
+			}
+		}
+
+		#endregion
 	}
 }

@@ -1,4 +1,4 @@
-﻿namespace Core.Common
+﻿namespace Core
 {
 	public interface IDebuggerObject
 	{
@@ -6,6 +6,6 @@
 	}
 	public interface ITestObject
 	{
-		object CreateTestObject();
+		object CreateTestObject(params object[] parameters);
 	}
 }

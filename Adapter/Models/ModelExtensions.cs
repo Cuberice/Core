@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Core.Common;
-using Core.Data;
-using Core.Service;
-using Models;
 
-namespace Core.Models
+namespace Core.Data
 {
 	public static class ModelExtensions
 	{
@@ -35,9 +29,9 @@ namespace Core.Models
 			return (T)t;
 		}
 
-		public static List<T> CreateTestInstances<T>(int amount) where T : ITestObject, new()
+		public static List<T> CreateTestInstances<T>(int amount, params object[] parameters) where T : ITestObject, new()
 		{
-			return Enumerable.Range(1, amount).Cast<object>().Select(i => new T().CreateTestObject()).Cast<T>().ToList();
+			return Enumerable.Range(1, amount).Cast<object>().Select(i => new T().CreateTestObject(parameters)).Cast<T>().ToList();
 		}
 	}
 }

@@ -12,13 +12,16 @@ namespace Core.Service
 		IDbAdapter Adapter { get; set; }
 		
 		[OperationContract]
-		List<T> GetAllForModelNoCache<T>() where T : new(); 
+		List<T> GetAllForModelNoCache<T>() where T : new();
 
-		[OperationContract]
+		[OperationContract(Name = "SelectForModel")]
 		List<T> SelectForModel<T>() where T : new();
 
-		[OperationContract]
+		[OperationContract(Name = "SelectForModelWhereExpression")]
 		List<T> SelectForModel<T>(Expression<Func<T, bool>> f) where T : new();
+
+		[OperationContract(Name = "SelectForModelWhereCommand")]
+		List<T> SelectForModel<T>(Command cmd) where T : new();
 		
 		[OperationContract]
 		void InsertModel<T>(T t);

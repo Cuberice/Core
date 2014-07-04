@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Core;
-using Core.Common;
 using Core.Data;
 
 
@@ -38,7 +37,7 @@ namespace Models
 		[Column("DIR", Column.DataType.String, Conversion = Column.ConversionType.DirectoryInfo)]
 		public DirectoryInfo Directory { get; set; }
 
-		public object CreateTestObject()
+		public object CreateTestObject(params object[] parameters)
 		{
 			ID = Guid.NewGuid();
 			Name = Extentions.GetRandomString(8);
@@ -68,8 +67,8 @@ namespace Models
 	
 		[Column("NAME", Column.DataType.String, NotNull = true)]
 		public string Name { get; set; }
-	
-		public object CreateTestObject()
+
+		public object CreateTestObject(params object[] parameters)
 		{
 			ID = Guid.NewGuid();
 			Name = "Make-" + Extentions.GetRandomString(8);

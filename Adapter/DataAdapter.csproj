@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\AdapterExtensions.cs" />
+    <Compile Include="Adapters\CommandExtensions.cs" />
     <Compile Include="Adapters\ExpressionExtensions.cs" />
     <Compile Include="Common\IDebuggerObject.cs" />
     <Compile Include="Models\ModelExtensions.cs" />

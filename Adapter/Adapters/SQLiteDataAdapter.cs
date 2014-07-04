@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
-using Core.Common;
 using Core.Properties;
 
 namespace Core.Data
@@ -266,7 +265,8 @@ namespace Core.Data
 	[DebuggerDisplay("{DebugString()}")]
 	public class Parameter : IDebuggerObject
 	{
-		public string Name { get; set; }
+		private string name;
+		public string Name { get { return "@" + name; } set { name = value.ToLower(); } }
 		public object Value { get; set; }
 
 		public string DebugString()
