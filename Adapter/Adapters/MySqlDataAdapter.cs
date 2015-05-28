@@ -56,7 +56,7 @@ namespace Core.Data
 			throw new NotImplementedException();
 		}
 
-		public string OPERATOR(ExpressionType t)
+		public string OPERATOR(OperatorType t)
 		{
 			throw new NotImplementedException();
 		}

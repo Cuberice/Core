@@ -73,7 +73,7 @@ namespace Core.Data
 
 		public Column GetColumn(string name)
 		{
-			return Columns.First(c => c.Name == name);
+			return Columns.First(c => String.Equals(c.Name, name, StringComparison.CurrentCultureIgnoreCase));
 		}
 
 		public static Column GetPrimaryKey(Type type)

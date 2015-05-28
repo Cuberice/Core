@@ -12,7 +12,6 @@ using Models;
 
 namespace Core.Service
 {
-	[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
 	public class DataService : IDataService
 	{
 		public IDbAdapter Adapter { get; set; }
@@ -173,7 +172,7 @@ namespace Core.Service
 				try
 				{
 					Command cmd = new Command();
-					cmd.AddExpression(c.ReferenceColumn, ExpressionType.Equal, pkVal);					
+					cmd.AddExpression(c.ReferenceColumn, OperatorType.Equal, pkVal);					
 					IEnumerable list = SelectForModel(c.ReferenceTableType, cmd);
 
 					foreach (BackReference br in BackReference.GetAll(c.ReferenceTableType))

@@ -59,17 +59,19 @@ namespace Core.Data
 		{
 			return "SELECT {0} FROM {1} {2};";
 		}
-		public string OPERATOR(ExpressionType t)
+		public string OPERATOR(OperatorType t)
 		{
 			switch (t)
 			{
-				case ExpressionType.Equal: return "=";
-				case ExpressionType.GreaterThan: return ">";
-				case ExpressionType.GreaterThanOrEqual: return ">=";
-				case ExpressionType.LessThan: return "<";
-				case ExpressionType.LessThanOrEqual: return "<=";
-				case ExpressionType.And | ExpressionType.AndAlso: return "AND";
-				case ExpressionType.Or | ExpressionType.OrElse: return "OR";
+				case OperatorType.Equal: return "=";
+				case OperatorType.GreaterThan: return ">";
+				case OperatorType.GreaterThanOrEqual: return ">=";
+				case OperatorType.LessThan: return "<";
+				case OperatorType.LessThanOrEqual: return "<=";
+				case OperatorType.And: return "AND";
+				case OperatorType.Or: return "OR";
+				case OperatorType.In: return "IN";
+
 			}
 			return "Symbol Not Implemented";
 		}

@@ -15,7 +15,7 @@ namespace Core.Data
 		string INSERTINTO();
 		string UPDATE();
 		string SELECT();
-		string OPERATOR(ExpressionType t);
+		string OPERATOR(OperatorType t);
 		#endregion
 
 		#region Data Execution
@@ -55,5 +55,13 @@ namespace Core.Data
 		bool Read();
 
 		object GetValue(string columnname);
+	}
+
+	public enum OperatorType
+	{
+		Equal, And, Or,
+		GreaterThan, GreaterThanOrEqual,
+		LessThan, LessThanOrEqual,
+		In
 	}
 }

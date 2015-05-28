@@ -34,7 +34,7 @@ namespace Core.Data
 			string scolumns = t.GetColumnString();
 
 			IAdapterCommand ACmd = adapter.CreateCommand(string.Format(adapter.SELECT(), scolumns, t.TableName, swhere));
-			exCmd.ParameterList.ForEach(p => ACmd.AddParameter(p.ParameterName, p.ParameterValue));
+			exCmd.DetailList.ForEach(p => ACmd.AddParameter(p.Parameter.ParameterName, p.Parameter.ParameterValue));
 
 			return ACmd;
 		}		
@@ -45,7 +45,9 @@ namespace Core.Data
 			string scolumns = t.GetColumnString();
 
 			IAdapterCommand ACmd = adapter.CreateCommand(string.Format(adapter.SELECT(), scolumns, t.TableName, swhere));
-			cmd.ParameterList.ForEach(p => ACmd.AddParameter(p.ParameterName, p.ParameterValue));
+			cmd.SetParameters(ACmd);
+
+			//cmd.DetailList.ForEach(p => ACmd.AddParameter(p.Parameter.ParameterName, p.Parameter.ParameterValue));
 
 			return ACmd;
 		}

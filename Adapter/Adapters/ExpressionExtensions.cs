@@ -138,6 +138,23 @@ namespace Core.Data
 			return combine.Contains(binEx.NodeType);
 		}
 
+		public static OperatorType OperatorType(this ExpressionType et)
+		{
+			switch (et)
+			{
+					case ExpressionType.Equal: return Data.OperatorType.Equal;
+					case ExpressionType.GreaterThan: return Data.OperatorType.GreaterThan;
+					case ExpressionType.GreaterThanOrEqual: return Data.OperatorType.GreaterThanOrEqual;
+					case ExpressionType.LessThan: return Data.OperatorType.LessThan;
+					case ExpressionType.LessThanOrEqual: return Data.OperatorType.LessThanOrEqual;
+					case ExpressionType.And: 
+					case ExpressionType.AndAlso: return Data.OperatorType.And; 
+					case ExpressionType.Or:
+					case ExpressionType.OrElse: return Data.OperatorType.Or;
+			}
+			throw new NotImplementedException("The Operator is not implemented in OperatorType : "+ et);
+		}
+
 		public static string LogicStringFromExpression<T>(this Expression ex, IDbAdapter adapter)
 		{
 			List<ExpressionType> compareNode = new List<ExpressionType>() { ExpressionType.Equal, ExpressionType.GreaterThan, ExpressionType.GreaterThanOrEqual, ExpressionType.LessThan, ExpressionType.LessThanOrEqual };
@@ -173,10 +190,10 @@ namespace Core.Data
 					if (column.ColumnSystemType != bin.Right.Type)
 						throw new Exception(string.Format("{0}.{1} - [{2}] and Value [{3}] DataTypes does not match for query ", table.TableName, column.Name, column.ColumnSystemType.Name, bin.Right.Type.Name));
 
-					return string.Format("{0} {2} {1}", column.Name, value, adapter.OPERATOR(bin.NodeType));
+					return string.Format("{0} {2} {1}", column.Name, value, adapter.OPERATOR(bin.NodeType.OperatorType()));
 				}
 
-				return string.Format("{0} {2} {1}", bin.Left.LogicStringFromExpression<T>(adapter), bin.Right.LogicStringFromExpression<T>(adapter), adapter.OPERATOR(bin.NodeType));
+				return string.Format("{0} {2} {1}", bin.Left.LogicStringFromExpression<T>(adapter), bin.Right.LogicStringFromExpression<T>(adapter), adapter.OPERATOR(bin.NodeType.OperatorType()));
 			}
 
 			return "";
